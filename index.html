@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دخول المسابقة</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #ffffff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+        }
+        h2 {
+            color: #1a1a1a;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 15px;
+            text-align: right;
+            font-weight: 500;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e4e8;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #0088cc;
+        }
+        button {
+            width: 100%;
+            padding: 13px;
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #006699;
+        }
+        .hidden {
+            display: none;
+        }
+        .success-box {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .checkmark-svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- نموذج أدخال الحساب -->
+    <div id="form-container">
+        <h2>دخول المسابقة 🏆</h2>
+        <label for="username">اكتب اسم حسابك:</label>
+        <input type="text" id="username" placeholder="مثال: @user123" required>
+        <button onclick="submitEntry()">دخول</button>
+    </div>
+
+    <!-- شاشة النجاح -->
+    <div id="success-container" class="success-box hidden">
+        <svg class="checkmark-svg" viewBox="0 0 52 52">
+            <circle cx="26" cy="26" r="25" fill="#28a745"/>
+            <path fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l7 7 16-16"/>
+        </svg>
+        <h3 style="color: #28a745; margin: 0; font-size: 22px;">تم الدخول بنجاح!</h3>
+    </div>
+</div>
+
+<script>
+function submitEntry() {
+    const usernameInput = document.getElementById('username').value.trim();
+    
+    if (!usernameInput) {
+        alert('يرجى كتابة اسم حسابك أولاً!');
+        return;
+    }
+
+    // إخفاء النموذج وإظهار علامة الصح
+    document.getElementById('form-container').classList.add('hidden');
+    document.getElementById('success-container').classList.remove('hidden');
+
+    // إرسال الإيميل المفعل باستخدام مفتاحك الخاص
+    const web3formsKey = '45b47b3b-22ab-4fa5-adc6-0afe362588bc';
+    
+    fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            access_key: web3formsKey,
+            subject: '🏆 مشارك جديد في المسابقة',
+            from_name: 'موقع المسابقة',
+            to_email: 'yazeednaif55@gmail.com',
+            message: `تم تسجيل مشارك جديد في المسابقة!\nاسم الحساب: ${usernameInput}`
+        })
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+
+</body>
+</html>
